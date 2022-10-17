@@ -1,28 +1,79 @@
 <html>
-  <head>
-    <style>
-      body { 
-        margin: 0;
-        font: 12px/1.5 sans-serif;
+
+<head>
+  <style>
+    body {
+      margin: 0;
+      font: 12px/1.5 sans-serif;
+    }
+
+    #container {
+      display: flex;
+    }
+
+    canvas {
+      width: 600px;
+      height: 600px;
+      margin-right: 24px;
+    }
+  </style>
+  <script>
+    MathJax = {
+      chtml: {
+        scale: 1.5,
       }
-      #container { 
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        overflow: scroll;
-      }
-      #pts { background-color: #f1f3f7; width: 600px; height: 600px;}
-      
-    </style>
-  </head>
-  <body>
-    <div id="container">
-      <div id="pts"></div>
-      <div><p><strong>A demo of Pts.js.</strong></p><p>Edit source code in <code>src/app.js</code> and this html file in <code>dist/index.html</code>.</p> <p>You can also use either typescript or javascript.</p></div>
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+</head>
+
+<body>
+  <h1>Wave plate</h1>
+  <div id="container">
+    <div id="form">
+      <div class="frequency">
+        <label for="frequency">Frequency</label>
+        <input type="number" name="frequency" id="frequency">
+      </div>
+      <div class="e_0x">
+        <label for="e_0x">E_0x</label>
+        <input type="number" name="e_0x" id="e_0x">
+      </div>
+      <div class="e_0y">
+        <label for="e_0y">E_0y</label>
+        <input type="number" name="e_0y" id="e_0y">
+      </div>
+      <div class="phi">
+        <label for="phi">phi</label>
+        <input type="number" name="phi" id="phi">
+      </div>
+      <div class="scale">
+        <label for="scale">scale</label>
+        <input type="number" name="scale" id="scale">
+      </div>
+      <div class="retardation">
+        <label for="retardation">retardation</label>
+        <input type="number" name="retardation" id="retardation">
+      </div>
+      <div class="retAngle">
+        <label for="retAngle">Retardation angle</label>
+        <input type="number" name="retAngle" id="retAngle">
+      </div>
+      <button id="apply-button">Apply</button>
     </div>
-    <script src="./dist.min.js"></script>
-  </body>
+    <div>
+      <canvas id="regular"></canvas>
+      <div id="pol-eq">
+        $$\vec{E} = \cos(t)\vec{u}_x + \cos(t)\vec{u}_y$$
+      </div>
+    </div>
+    <div>
+      <canvas id="retarded"></canvas>
+    </div>
+  </div>
+  <script src="./dist.min.js"></script>
+</body>
+
 </html>

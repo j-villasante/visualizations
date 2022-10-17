@@ -5,7 +5,9 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node esbuild.config.js",
-    "build": "esbuild ./src/app.js --bundle --minify --outfile=./dist/dist.min.js"
+    "build": "esbuild ./src/app.js --bundle --minify --outfile=./dist/dist.min.js",
+    "lint": "eslint \"src/**/*.ts\"",
+    "lintfix": "npm run lint -- --fix"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,14 @@
   },
   "homepage": "https://github.com/j-villasante/visualizations#readme",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
     "esbuild": "^0.15.10",
-    "live-server": "^1.2.2"
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "live-server": "^1.2.2",
+    "prettier": "2.7.1",
+    "typescript": "^4.8.4"
   },
   "dependencies": {
     "pts": "^0.11.2"
