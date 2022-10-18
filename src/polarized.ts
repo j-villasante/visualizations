@@ -2,24 +2,24 @@ import type { Parameters } from "./parameters"
 import { CartesianSpace } from "./ext"
 import { Pt } from "pts"
 
-export function setupPolarizedField(params: Parameters): CartesianSpace {
+export function setupPolarizedField(p: Parameters): CartesianSpace {
     const space = new CartesianSpace("#regular").setup({
         pixelDensity: 2,
-        bgcolor: "#ffffff",
+        bgcolor: "#04121f",
     })
     const form = space.getForm()
 
     space.add((time) => {
         if (!time) return
 
-        form.strokeOnly("#000", 0.1).drawGrid(params.scale)
-        form.strokeOnly("#000", 1).drawAxis(space.center)
+        form.strokeOnly("#fff", 0.2).drawGrid(p.scale)
+        form.strokeOnly("#fff", 1).drawAxis(space.center)
 
         const t = time / 1000
         const E = new Pt(
-            params.E_0x * Math.cos(params.w * t),
-            params.E_0y * Math.cos(params.w * t + params.phi),
-        ).$multiply(params.scale)
+            p.E_0x * Math.cos(p.w * t),
+            p.E_0y * Math.cos(p.w * t + p.phi),
+        ).$multiply(p.scale)
 
         form.stroke("#9d0000ff", 2)
             .fill("#9d0000ff")
@@ -30,8 +30,8 @@ export function setupPolarizedField(params: Parameters): CartesianSpace {
                 ],
                 3,
             )
-        form.stroke("#000", 3)
-            .fill("#000")
+        form.stroke("#fff", 3)
+            .fill("#fff")
             .drawArrowLine([space.center, space.center.$add(E)], 4)
     })
     return space

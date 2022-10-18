@@ -43,7 +43,7 @@ export class Parameters {
         this.E_0yElem.value = this.E_0y.toString()
         this.phiElem.value = this.phi.toString()
         this.scaleElem.value = this.scale.toString()
-        this.retardationElem.value = this.retardation.toString()
+        this.retardationElem.value = this.retardation.toFixed(8)
         this.retAngleElem.value = this.retAngle.toString()
 
         document
@@ -80,7 +80,6 @@ export class Parameters {
         }t)\\vec{u}_x + ${this.E_0y === 1 ? "" : this.E_0y}\\cos(${
             this.w === 1 ? "" : this.w
         }t ${this.phi ? "+" + this.phi : ""})\\vec{u}_y$$`
-        console.log(eq)
         el.innerHTML = eq
         MathJax.typeset()
     }

@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node esbuild.config.js",
-    "build": "esbuild ./src/app.js --bundle --minify --outfile=./dist/dist.min.js",
+    "build": "node esbuild.config.js build",
     "lint": "eslint \"src/**/*.ts\"",
     "lintfix": "npm run lint -- --fix"
   },
@@ -23,6 +23,7 @@
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "esbuild": "^0.15.10",
+    "esbuild-sass-plugin": "^2.3.3",
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
     "live-server": "^1.2.2",

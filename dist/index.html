@@ -1,27 +1,12 @@
 <html>
 
 <head>
-  <style>
-    body {
-      margin: 0;
-      font: 12px/1.5 sans-serif;
-    }
-
-    #container {
-      display: flex;
-    }
-
-    canvas {
-      width: 600px;
-      height: 600px;
-      margin-right: 24px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./normalize.css">
+  <link rel="stylesheet" href="./styles/main.css">
   <script>
     MathJax = {
-      chtml: {
-        scale: 1.5,
-      }
+      chtml: {}
     };
   </script>
   <script type="text/javascript" id="MathJax-script" async
@@ -32,48 +17,61 @@
 <body>
   <h1>Wave plate</h1>
   <div id="container">
-    <div id="form">
-      <div class="frequency">
-        <label for="frequency">Frequency</label>
+    <div class="form">
+      <div class="form-group">
+        <label for="frequency">\(\omega\)</label>
         <input type="number" name="frequency" id="frequency">
       </div>
-      <div class="e_0x">
-        <label for="e_0x">E_0x</label>
+      <div class="form-group">
+        <label for="e_0x">\(E_{0x}\)</label>
         <input type="number" name="e_0x" id="e_0x">
       </div>
-      <div class="e_0y">
-        <label for="e_0y">E_0y</label>
+      <div class="form-group">
+        <label for="e_0y">\(E_{0y}\)</label>
         <input type="number" name="e_0y" id="e_0y">
       </div>
-      <div class="phi">
-        <label for="phi">phi</label>
+      <div class="form-group">
+        <label for="phi">\(\phi\)</label>
         <input type="number" name="phi" id="phi">
       </div>
-      <div class="scale">
-        <label for="scale">scale</label>
+      <div class="form-group">
+        <label for="scale">Scale</label>
         <input type="number" name="scale" id="scale">
       </div>
-      <div class="retardation">
-        <label for="retardation">retardation</label>
+      <div class="form-group">
+        <label for="retardation">\(\sigma\) Slow axis delay (s)</label>
         <input type="number" name="retardation" id="retardation">
       </div>
-      <div class="retAngle">
-        <label for="retAngle">Retardation angle</label>
-        <input type="number" name="retAngle" id="retAngle">
+      <div class="form-group">
+        <label for="retAngle">Wave plate angle</label>
+        <input type="number" name="retAngle" id="retAngle" step="0.1">
       </div>
       <button id="apply-button">Apply</button>
     </div>
     <div>
+      <div class="animation-label">Polarized light</div>
       <canvas id="regular"></canvas>
       <div id="pol-eq">
         $$\vec{E} = \cos(t)\vec{u}_x + \cos(t)\vec{u}_y$$
       </div>
     </div>
     <div>
+      <div class="animation-label">Shifted light</div>
       <canvas id="retarded"></canvas>
     </div>
   </div>
-  <script src="./dist.min.js"></script>
+  <div class="explanation">
+    The animation on the left shows the change of the electric field given by
+    $$
+    \vec{E}=E_{0x}\cos(\omega t)\vec{u}_x + E_{0y}\cos(\omega t + \phi)\vec{u}_y
+    $$
+    The animation on the right represents the light after going through a waveplate. The resulting vector is obtained by changing the basis vectors of \(\vec{E}\) to the rotated axis, and retarding the component on the slow axis with
+    $$
+    t_r=t-\sigma
+    $$
+    The whole code can be found <a href="https://github.com/j-villasante/visualizations">here</a>.
+  </div>
+  <script src="./app.js"></script>
 </body>
 
 </html>
