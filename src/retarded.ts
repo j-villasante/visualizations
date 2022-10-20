@@ -28,18 +28,21 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
 
         // Second axis
         const angle = p.retAngle
-        form.strokeOnly("red", 1).drawAxis(space.center, angle)
+        form.strokeOnly("#FF0000", 1).drawAxis(space.center, angle)
 
         const a = Mat.rotate2DMatrix(Math.cos(-angle), Math.sin(-angle))
         const b = Mat.rotate2DMatrix(Math.cos(angle), Math.sin(angle))
         const rPtx = Mat.transform2D([Mat.transform2D(E_r, b).x, 0], a)
         const rPty = Mat.transform2D([0, Mat.transform2D(E, b).y], a)
-        form.stroke("#5541FF", 2)
-            .fill("#5541FF")
-            .drawArrowLines([
-                [space.center, space.center.$add(rPtx)],
-                [space.center, space.center.$add(rPty)],
-            ])
+        form.stroke("#FF9722", 2)
+            .fill("#FF9722")
+            .drawArrowLines(
+                [
+                    [space.center, space.center.$add(rPtx)],
+                    [space.center, space.center.$add(rPty)],
+                ],
+                3,
+            )
         form.stroke("#fff", 3)
             .fill("#fff")
             .drawArrowLine(
@@ -55,6 +58,10 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
                 space.center.$add(d * Math.cos(angle), -d * Math.sin(angle)),
                 "Slow axis",
             )
+        // Time
+        form.fill("#fff")
+            .font(13)
+            .text([10, space.height - 10], (time / 1000).toFixed(1) + "s")
     })
     return space
 }

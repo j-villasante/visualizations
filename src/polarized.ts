@@ -21,8 +21,8 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
             p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
 
-        form.stroke("#9d0000ff", 2)
-            .fill("#9d0000ff")
+        form.stroke("#FF0000", 2)
+            .fill("#FF0000")
             .drawArrowLines(
                 [
                     [space.center, space.center.$add(0, E.y)],
@@ -33,6 +33,10 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
         form.stroke("#fff", 3)
             .fill("#fff")
             .drawArrowLine([space.center, space.center.$add(E)], 4)
+
+        form.fill("#fff")
+            .font(13)
+            .text([10, space.height - 10], (time / 1000).toFixed(1) + "s")
     })
     return space
 }

@@ -49,8 +49,9 @@ export class Parameters {
         document
             .getElementById("apply-button")
             ?.addEventListener("click", () => this.apply())
-        const enterHandler = (e: KeyboardEvent) =>
-            e.key === "Enter" && this.apply()
+        const enterHandler = (e: KeyboardEvent) => {
+            ;(e.key === "Enter" || e.key === "ArrowUp" || e.key === "ArrowDown") && this.apply()
+        }
         this.freqElem.addEventListener("keyup", enterHandler)
         this.E_0xElem.addEventListener("keyup", enterHandler)
         this.E_0yElem.addEventListener("keyup", enterHandler)
@@ -61,13 +62,13 @@ export class Parameters {
     }
 
     apply() {
-        this.w = parseFloat(this.freqElem.value) || 1
-        this.E_0x = parseFloat(this.E_0xElem.value) || 1
-        this.E_0y = parseFloat(this.E_0yElem.value) || 1
-        this.phi = parseFloat(this.phiElem.value) || 0
-        this.scale = parseFloat(this.scaleElem.value) || 100
-        this.retardation = parseFloat(this.retardationElem.value) || 0
-        this.retAngle = parseFloat(this.retAngleElem.value) || 0
+        this.w = parseNumber(this.freqElem.value, 1)
+        this.E_0x = parseNumber(this.E_0xElem.value, 1)
+        this.E_0y = parseNumber(this.E_0yElem.value, 1)
+        this.phi = parseNumber(this.phiElem.value, 0)
+        this.scale = parseNumber(this.scaleElem.value, 100)
+        this.retardation = parseNumber(this.retardationElem.value, 0)
+        this.retAngle = parseNumber(this.retAngleElem.value, 0)
 
         this.render()
     }
@@ -83,4 +84,10 @@ export class Parameters {
         el.innerHTML = eq
         MathJax.typeset()
     }
+}
+
+function parseNumber(value: string, def: number): number {
+    const parsed = parseFloat(value)
+    if (isNaN(parsed)) return def
+    return parsed
 }

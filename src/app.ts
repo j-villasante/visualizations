@@ -9,3 +9,8 @@ polarizedSpace.play()
 
 const retardedSpace = setupRetardedField(params)
 retardedSpace.play()
+
+document.getElementById("but-stop")?.addEventListener("click", () => {
+    polarizedSpace.pause(true)
+    retardedSpace.pause(true)
+})
