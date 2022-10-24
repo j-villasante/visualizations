@@ -23,8 +23,8 @@ export class Parameters {
         this.E_0y = 1
         this.phi = 0
         this.scale = 100
-        this.retardation = Math.PI
-        this.retAngle = 0.1
+        this.retardation = 1
+        this.retAngle = 0
 
         this.freqElem = document.getElementById("frequency") as HTMLInputElement
         this.E_0xElem = document.getElementById("e_0x") as HTMLInputElement
@@ -43,7 +43,7 @@ export class Parameters {
         this.E_0yElem.value = this.E_0y.toString()
         this.phiElem.value = this.phi.toString()
         this.scaleElem.value = this.scale.toString()
-        this.retardationElem.value = this.retardation.toFixed(8)
+        this.retardationElem.value = this.retardation.toString()
         this.retAngleElem.value = this.retAngle.toString()
 
         document
