@@ -18,7 +18,7 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
         const t = time / 1000
         const E = new Pt(
             p.E_0x * Math.cos(p.w * t),
-            p.E_0y * Math.cos(p.w * t + p.phi),
+            -p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
 
         form.stroke("#FF0000", 2)

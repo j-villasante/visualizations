@@ -45,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label for="retAngle">Wave plate angle</label>
-                <input type="number" name="retAngle" id="retAngle" step="0.1">
+                <input type="number" name="retAngle" id="retAngle" step="1">
             </div>
             <button id="apply-button">Apply</button>
             <button id="but-stop">Play/pause</button>
@@ -55,7 +55,9 @@
                 <div class="animation-label">Polarized light</div>
                 <canvas id="regular"></canvas>
                 <div id="pol-eq">
-                    $$\vec{E} = \cos(t)\vec{u}_x + \cos(t)\vec{u}_y$$
+                    $$
+                    \vec{E} = e^{it}\begin{pmatrix} 1 \\ 1 \end{pmatrix}
+                    $$
                 </div>
             </div>
             <div>
@@ -67,7 +69,7 @@
     <div class="explanation">
         The animation on the left shows the change of the electric field of light given by
         $$
-        \vec{E}=E_{0x}\cos(\omega t)\vec{u}_x + E_{0y}\cos(\omega t + \phi)\vec{u}_y
+        \vec{E} = e^{i\omega t}\begin{pmatrix} E_{0x} \\ E_{0y}e^{i\phi} \end{pmatrix}
         $$
         The animation on the right represents the light after going through a waveplate. The resulting vector is obtained by changing the basis vectors of \(\vec{E}\) to the rotated axis, and retarding the component on the slow axis with
         $$

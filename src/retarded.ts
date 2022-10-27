@@ -16,43 +16,43 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
         form.strokeOnly("#fff", 1).drawAxis(space.center)
 
         const t = time / 1000
+        // Create the normal field
         const E = new Pt(
             p.E_0x * Math.cos(p.w * t),
             p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
+        // Create a retarded field
         const E_r = new Pt(
             p.E_0x * Math.cos(p.w * t - p.retardation * Math.PI),
             p.E_0y * Math.cos(p.w * t + p.phi - p.retardation * Math.PI),
         ).$multiply(p.scale)
 
-        // Second axis
         const angle = p.retAngle
+        // Second axis
         form.strokeOnly("#FF0000", 1).drawAxis(space.center, angle)
 
-        const a = Mat.rotate2DMatrix(Math.cos(-angle), Math.sin(-angle))
-        const rPtx = Mat.transform2D(
-            [Vec.dot(E_r, [Math.cos(angle), Math.sin(angle)]), 0],
-            a,
-        )
-        const rPty = Mat.transform2D(
-            [0, Vec.dot(E, [-Math.sin(angle), Math.cos(angle)])],
-            a,
-        )
+        // Find the values x' and y' on a rotated (by angle) axis
+        const a = Mat.rotate2DMatrix(Math.cos(angle), Math.sin(angle))
+        const x_ = Vec.dot(E_r, [Math.cos(angle), Math.sin(angle)])
+        const y_ = Vec.dot(E, [-Math.sin(angle), Math.cos(angle)])
+
+        // Rotate the vectors (x', 0) and (0, y') back to a the main coordinate
+        // system and make y := -y since the canvas axis is upside down.
+        const x_r = Mat.transform2D([x_, 0], a).$multiply(1, -1)
+        const y_r = Mat.transform2D([0, y_], a).$multiply(1, -1)
+
         form.stroke("#FF9722", 2)
             .fill("#FF9722")
             .drawArrowLines(
                 [
-                    [space.center, space.center.$add(rPtx)],
-                    [space.center, space.center.$add(rPty)],
+                    [space.center, space.center.$add(x_r)],
+                    [space.center, space.center.$add(y_r)],
                 ],
                 3,
             )
         form.stroke("#fff", 3)
             .fill("#fff")
-            .drawArrowLine(
-                [space.center, space.center.$add(rPtx).$add(rPty)],
-                4,
-            )
+            .drawArrowLine([space.center, space.center.$add(x_r).$add(y_r)], 4)
 
         // Label
         const d = 0.35 * space.width

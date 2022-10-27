@@ -44,21 +44,19 @@ export class Parameters {
         this.phiElem.value = this.phi.toString()
         this.scaleElem.value = this.scale.toString()
         this.retardationElem.value = this.retardation.toString()
-        this.retAngleElem.value = this.retAngle.toString()
+        this.retAngleElem.value = (0).toString()
 
         document
             .getElementById("apply-button")
             ?.addEventListener("click", () => this.apply())
-        const enterHandler = (e: KeyboardEvent) => {
-            ;(e.key === "Enter" || e.key === "ArrowUp" || e.key === "ArrowDown") && this.apply()
-        }
-        this.freqElem.addEventListener("keyup", enterHandler)
-        this.E_0xElem.addEventListener("keyup", enterHandler)
-        this.E_0yElem.addEventListener("keyup", enterHandler)
-        this.phiElem.addEventListener("keyup", enterHandler)
-        this.scaleElem.addEventListener("keyup", enterHandler)
-        this.retardationElem.addEventListener("keyup", enterHandler)
-        this.retAngleElem.addEventListener("keyup", enterHandler)
+        const enterHandler = () => this.apply()
+        this.freqElem.addEventListener("change", enterHandler)
+        this.E_0xElem.addEventListener("change", enterHandler)
+        this.E_0yElem.addEventListener("change", enterHandler)
+        this.phiElem.addEventListener("change", enterHandler)
+        this.scaleElem.addEventListener("change", enterHandler)
+        this.retardationElem.addEventListener("change", enterHandler)
+        this.retAngleElem.addEventListener("change", enterHandler)
     }
 
     apply() {
@@ -68,7 +66,8 @@ export class Parameters {
         this.phi = parseNumber(this.phiElem.value, 0)
         this.scale = parseNumber(this.scaleElem.value, 100)
         this.retardation = parseNumber(this.retardationElem.value, 0)
-        this.retAngle = parseNumber(this.retAngleElem.value, 0)
+        this.retAngle =
+            (parseNumber(this.retAngleElem.value, 0) * Math.PI) / 180
 
         this.render()
     }
@@ -76,11 +75,13 @@ export class Parameters {
     render() {
         const el = document.getElementById("pol-eq")
         if (!el) return
-        const eq = `$$\\vec{E}=${this.E_0x === 1 ? "" : this.E_0x}\\cos(${
+        const eq = `$$\\vec{E} = e^{i${
             this.w === 1 ? "" : this.w
-        }t)\\vec{u}_x + ${this.E_0y === 1 ? "" : this.E_0y}\\cos(${
-            this.w === 1 ? "" : this.w
-        }t ${this.phi ? "+" + this.phi : ""})\\vec{u}_y$$`
+        }t}\\begin{pmatrix} ${this.E_0x} \\\\ ${
+            this.E_0y === 1 && this.phi !== 0 ? "" : this.E_0y
+        }${
+            this.phi === 0 ? "" : `e^{${this.phi === 1 ? "" : this.phi}i}`
+        } \\end{pmatrix}$$`
         el.innerHTML = eq
         MathJax.typeset()
     }
