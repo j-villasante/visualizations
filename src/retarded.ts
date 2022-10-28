@@ -32,15 +32,16 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
         form.strokeOnly("#FF0000", 1).drawAxis(space.center, angle)
 
         // Find the values x' and y' on a rotated (by angle) axis
-        const a = Mat.rotate2DMatrix(Math.cos(angle), Math.sin(angle))
         const x_ = Vec.dot(E_r, [Math.cos(angle), Math.sin(angle)])
         const y_ = Vec.dot(E, [-Math.sin(angle), Math.cos(angle)])
 
         // Rotate the vectors (x', 0) and (0, y') back to a the main coordinate
         // system and make y := -y since the canvas axis is upside down.
+        const a = Mat.rotate2DMatrix(Math.cos(angle), Math.sin(angle))
         const x_r = Mat.transform2D([x_, 0], a).$multiply(1, -1)
         const y_r = Mat.transform2D([0, y_], a).$multiply(1, -1)
 
+        // Draw the components of the rotated axis.
         form.stroke("#FF9722", 2)
             .fill("#FF9722")
             .drawArrowLines(
@@ -50,6 +51,8 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
                 ],
                 3,
             )
+        
+        // Draw the electric field vector.
         form.stroke("#fff", 3)
             .fill("#fff")
             .drawArrowLine([space.center, space.center.$add(x_r).$add(y_r)], 4)
