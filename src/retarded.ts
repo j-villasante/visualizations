@@ -2,8 +2,14 @@ import type { Parameters } from "./parameters"
 import { CartesianSpace } from "./ext"
 import { Mat, Pt, Vec } from "pts"
 
-export function setupRetardedField(p: Parameters): CartesianSpace {
-    const space = new CartesianSpace("#retarded").setup({
+type Options = {
+    type?: "in-transit";
+    elementId: string;
+}
+
+export function setupRetardedField(p: Parameters, options: Options): CartesianSpace {
+    const { elementId, type } = options;
+    const space = new CartesianSpace(elementId).setup({
         pixelDensity: 2,
         bgcolor: "#04121f",
     })
@@ -22,9 +28,10 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
             p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
         // Create a retarded field
+        const retZ = type === "in-transit" ? p.retZ : 1;
         const E_r = new Pt(
-            p.E_0x * Math.cos(p.w * t - p.retardation * Math.PI),
-            p.E_0y * Math.cos(p.w * t + p.phi - p.retardation * Math.PI),
+            p.E_0x * Math.cos(p.w * t - p.retardation * retZ),
+            p.E_0y * Math.cos(p.w * t + p.phi - p.retardation * retZ),
         ).$multiply(p.scale)
 
         const angle = p.retAngle
@@ -58,9 +65,9 @@ export function setupRetardedField(p: Parameters): CartesianSpace {
             .drawArrowLine([space.center, space.center.$add(x_r).$add(y_r)], 4)
 
         // Label
-        const d = 0.35 * space.width
+        const d = 0.32 * space.width
         form.fill("#fff")
-            .font(13)
+            .font(12)
             .text(
                 space.center.$add(d * Math.cos(angle), -d * Math.sin(angle)),
                 "Slow axis",

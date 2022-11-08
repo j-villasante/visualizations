@@ -18,51 +18,70 @@
 <body>
     <h1>Wave plate</h1>
     <div id="container">
-        <div class="form">
-            <div class="form-group">
-                <label for="frequency">\(\omega\)</label>
-                <input type="number" name="frequency" id="frequency" step="0.1">
-            </div>
-            <div class="form-group">
-                <label for="e_0x">\(E_{0x}\)</label>
-                <input type="number" name="e_0x" id="e_0x" step="0.1">
-            </div>
-            <div class="form-group">
-                <label for="e_0y">\(E_{0y}\)</label>
-                <input type="number" name="e_0y" id="e_0y" step="0.1">
-            </div>
-            <div class="form-group">
-                <label for="phi">\(\phi\)</label>
-                <input type="number" name="phi" id="phi" step="0.1">
-            </div>
-            <div class="form-group">
-                <label for="retardation">\(\Gamma\) (\(\pi\) units)</label>
-                <input type="number" name="retardation" id="retardation" step="0.1">
-            </div>
-            <div class="form-group">
-                <label for="retAngle">\(\theta\)</label>
-                <input type="number" name="retAngle" id="retAngle" step="1">
-            </div>
-            <div class="form-group">
-                <label for="scale">Scale</label>
-                <input type="number" name="scale" id="scale">
-            </div>
-            <button id="apply-button">Apply</button>
-            <button id="but-stop">Play/pause</button>
-        </div>
         <div id="animations">
             <div>
                 <div class="animation-label">Polarized light</div>
-                <canvas id="regular"></canvas>
+                <canvas class="field" id="regular"></canvas>
                 <div id="pol-eq">
                     $$
                     \vec{E} = e^{it}\begin{pmatrix} 1 \\ 1 \end{pmatrix}
                     $$
                 </div>
+                <div id="quantum-eq">
+                    $$
+                    \rho=\frac{1}{2}(1+\sigma_2)
+                    $$
+                </div>
+            </div>
+            <div>
+                <div class="animation-label">In-transit light</div>
+                <canvas class="field" id="in-transit"></canvas>
+                <canvas id="wave-plate"></canvas>
             </div>
             <div>
                 <div class="animation-label">Shifted light</div>
-                <canvas id="retarded"></canvas>
+                <canvas class="field" id="retarded"></canvas>
+            </div>
+        </div>
+        <h2>Parameters</h2>
+        <div class="form">
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="e_0x">\(E_{0x}\)</label>
+                    <input type="text" name="e_0x" id="e_0x">
+                </div>
+                <div class="form-group">
+                    <label for="e_0y">\(E_{0y}\)</label>
+                    <input type="text" name="e_0y" id="e_0y">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="frequency">\(\omega\)</label>
+                    <input type="text" name="frequency" id="frequency">
+                </div>
+                <div class="form-group">
+                    <label for="phi">\(\phi\)</label>
+                    <input type="text" name="phi" id="phi">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="retardation">\(\Gamma\)</label>
+                    <input type="text" name="retardation" id="retardation">
+                </div>
+                <div class="form-group">
+                    <label for="retAngle">\(\theta\)</label>
+                    <input type="text" name="retAngle" id="retAngle">
+                </div>
+            </div>
+            <div class="form-col">
+                <div class="form-group">
+                    <label for="scale">Scale</label>
+                    <input type="number" name="scale" id="scale" step="5">
+                </div>
+                <button id="apply-button">Apply</button>
+                <button id="but-stop">Play/pause</button>
             </div>
         </div>
     </div>

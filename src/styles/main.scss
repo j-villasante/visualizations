@@ -14,39 +14,48 @@ h1 {
 
 #container {
 	display: flex;
-	justify-content: center;
-
-	@media screen and (max-width: $small) {
-		flex-direction: column;
-		align-items: center;
-	}
+	flex-direction: column;
+	align-items: center;
 
 	#animations {
 		display: flex;
+		gap: 20px;
 
 		@media screen and (max-width: $small) {
 			flex-direction: column;
 			align-items: center;
+			gap: 0px;
 		}
 	}
 }
 
-canvas {
-	width: 400px;
-	height: 400px;
+.field {
+	width: 300px;
+	height: 300px;
+	display: block;
 }
 
-#regular {
-	margin-right: 24px;
-
-	@media screen and (max-width: $small) {
-		margin-right: 0px;
-	}
+#wave-plate {
+	width: 300px;
+	height: 50px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .form {
 	margin-right: 16px;
 	margin-bottom: 24px;
+	display: flex;
+	gap: 16px;
+	border: 1px solid white;
+	padding: 24px;
+	border-radius: 5px;
+
+	@media screen and (max-width: $small) {
+		flex-direction: column;
+		align-items: center;
+		gap: 0px;
+	}
 
 	.form-group {
 		display: flex;
@@ -56,6 +65,8 @@ canvas {
 		label {
 			margin-bottom: 4px;
 			font-size: 20px;
+			height: 24px;
+			line-height: 0.8;
 		}
 
 		input {
@@ -71,7 +82,7 @@ canvas {
 		}
 	}
 	button {
-		display: block;
+		margin-top: 30px;
 		margin-bottom: 16px;
 	}
 }
@@ -87,7 +98,7 @@ button {
 	font-size: 22px;
 }
 
-#pol-eq {
+#pol-eq, #quantum-eq {
 	font-size: 20px;
 }
 

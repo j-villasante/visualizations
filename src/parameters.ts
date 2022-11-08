@@ -1,5 +1,7 @@
 declare const MathJax
 
+import { round, evaluate } from "mathjs"
+
 export class Parameters {
     w: number
     E_0x: number
@@ -8,6 +10,7 @@ export class Parameters {
     scale: number
     retardation: number
     retAngle: number
+    private _retZ: number
 
     private freqElem: HTMLInputElement
     private E_0xElem: HTMLInputElement
@@ -22,9 +25,10 @@ export class Parameters {
         this.E_0x = 1
         this.E_0y = 1
         this.phi = 0
-        this.scale = 100
-        this.retardation = 1
+        this.scale = 75
+        this.retardation = Math.PI
         this.retAngle = 0
+        this._retZ = 0
 
         this.freqElem = document.getElementById("frequency") as HTMLInputElement
         this.E_0xElem = document.getElementById("e_0x") as HTMLInputElement
@@ -43,7 +47,7 @@ export class Parameters {
         this.E_0yElem.value = this.E_0y.toString()
         this.phiElem.value = this.phi.toString()
         this.scaleElem.value = this.scale.toString()
-        this.retardationElem.value = this.retardation.toString()
+        this.retardationElem.value = "pi"
         this.retAngleElem.value = (0).toString()
 
         document
@@ -57,17 +61,24 @@ export class Parameters {
         this.scaleElem.addEventListener("change", enterHandler)
         this.retardationElem.addEventListener("change", enterHandler)
         this.retAngleElem.addEventListener("change", enterHandler)
+
+        setInterval(() => {
+            if (this._retZ === 1000) {
+                this._retZ = 0
+            } else {
+                this._retZ += 1
+            }
+        }, 10)
     }
 
     apply() {
-        this.w = parseNumber(this.freqElem.value, 1)
-        this.E_0x = parseNumber(this.E_0xElem.value, 1)
-        this.E_0y = parseNumber(this.E_0yElem.value, 1)
-        this.phi = parseNumber(this.phiElem.value, 0)
-        this.scale = parseNumber(this.scaleElem.value, 100)
-        this.retardation = parseNumber(this.retardationElem.value, 0)
-        this.retAngle =
-            (parseNumber(this.retAngleElem.value, 0) * Math.PI) / 180
+        this.w = evaluate(this.freqElem.value)
+        this.E_0x = evaluate(this.E_0xElem.value)
+        this.E_0y = evaluate(this.E_0yElem.value)
+        this.phi = evaluate(this.phiElem.value)
+        this.scale = evaluate(this.scaleElem.value)
+        this.retardation = evaluate(this.retardationElem.value)
+        this.retAngle = (evaluate(this.retAngleElem.value) * Math.PI) / 180
 
         this.render()
     }
@@ -82,13 +93,47 @@ export class Parameters {
         }${
             this.phi === 0 ? "" : `e^{${this.phi === 1 ? "" : this.phi}i}`
         } \\end{pmatrix}$$`
+
+        const theta = Math.atan2(this.E_0y, this.E_0x)
+        const s1 = round(Math.cos(2 * theta), 2)
+        const s2 = round(Math.sin(2 * theta) * Math.cos(this.phi), 2)
+        const s3 = round(Math.sin(2 * theta) * Math.sin(this.phi), 2)
+        console.log(s1, s2, s3)
+
+        const qel = document.getElementById("quantum-eq")
+        if (!qel) return
+        const q_eq = `$$
+        \\rho=\\frac{1}{2}(1
+        ${
+            s1 === 0
+                ? ""
+                : `${s1 < 0 ? "-" : "+"} ${
+                      Math.abs(s1) === 1 ? "" : Math.abs(s1)
+                  } \\sigma_1`
+        }
+        ${
+            s2 === 0
+                ? ""
+                : `${s2 < 0 ? "-" : "+"} ${
+                      Math.abs(s2) === 1 ? "" : Math.abs(s2)
+                  } \\sigma_2`
+        }
+        ${
+            s3 === 0
+                ? ""
+                : `${s3 < 0 ? "-" : "+"} ${
+                      Math.abs(s3) === 1 ? "" : Math.abs(s3)
+                  } \\sigma_3`
+        }
+        )
+        $$`
+
         el.innerHTML = eq
+        qel.innerHTML = q_eq
         MathJax.typeset()
     }
-}
 
-function parseNumber(value: string, def: number): number {
-    const parsed = parseFloat(value)
-    if (isNaN(parsed)) return def
-    return parsed
+    get retZ() {
+        return this._retZ / 1000
+    }
 }
