@@ -1,5 +1,5 @@
-import type { Parameters } from "./parameters"
-import { CartesianSpace } from "./ext"
+import type { Parameters } from "."
+import { CartesianSpace } from "../../ext"
 import { Mat, Pt, Vec } from "pts"
 
 type Options = {
@@ -28,13 +28,13 @@ export function setupRetardedField(p: Parameters, options: Options): CartesianSp
             p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
         // Create a retarded field
-        const retZ = type === "in-transit" ? p.retZ : 1;
+        const retZ = type === "in-transit" ? p.zPos : 1;
         const E_r = new Pt(
-            p.E_0x * Math.cos(p.w * t - p.retardation * retZ),
-            p.E_0y * Math.cos(p.w * t + p.phi - p.retardation * retZ),
+            p.E_0x * Math.cos(p.w * t - p.gamma * retZ),
+            p.E_0y * Math.cos(p.w * t + p.phi - p.gamma * retZ),
         ).$multiply(p.scale)
 
-        const angle = p.retAngle
+        const angle = p.theta
         // Second axis
         form.strokeOnly("#FF0000", 1).drawAxis(space.center, angle)
 

@@ -1,5 +1,5 @@
-import type { Parameters } from "./parameters"
-import { CartesianSpace } from "./ext"
+import type { Parameters } from "."
+import { CartesianSpace } from "../../ext"
 import { Pt } from "pts"
 
 export function setupPolarizedField(p: Parameters): CartesianSpace {

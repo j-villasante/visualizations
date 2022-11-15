@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/j-villasante/visualizations#readme",
   "devDependencies": {
+    "@types/react": "^18.0.25",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
     "esbuild": "^0.15.10",
@@ -31,7 +32,10 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "better-react-mathjax": "^2.0.2",
     "mathjs": "^11.3.3",
-    "pts": "^0.11.2"
+    "pts": "^0.11.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

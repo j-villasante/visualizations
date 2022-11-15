@@ -17,7 +17,7 @@ if (!build) {
 
 require("esbuild")
     .build({
-        entryPoints: ["./src/styles/main.scss", "./src/app.ts"],
+        entryPoints: ["./src/styles/main.scss", "./src/index.tsx"],
         bundle: true,
         outdir: "./dist",
         watch: !build,
