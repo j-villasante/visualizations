@@ -12,15 +12,15 @@ export function setupPositionAnimation(p: Parameters): CanvasSpace {
     space.add((time) => {
         if (!time) return
 
-        form.strokeOnly("red").lines([
-            [new Pt(margin, 0), new Pt(margin, space.height)],
-            [
-                new Pt(space.width - margin, 0),
-                new Pt(space.width - margin, space.height),
-            ],
+        form.fillOnly("#2a4f72").rect([
+            new Pt(margin, 0),
+            new Pt(space.width - margin, space.height + 1),
         ])
-        const wp = space.width - (2 * margin);
-        const circle = Circle.fromCenter([margin + wp * p.zPos, space.center.y], 5);
+        const wp = space.width - 2 * margin
+        const circle = Circle.fromCenter(
+            [margin + wp * p.zPos, space.center.y],
+            5,
+        )
         form.fill("red").circle(circle)
 
         form.fill("#fff")

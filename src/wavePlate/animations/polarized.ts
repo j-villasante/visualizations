@@ -12,7 +12,7 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
     space.add((time) => {
         if (!time) return
 
-        form.strokeOnly("#fff", 0.2).drawGrid(p.scale)
+        form.strokeOnly("#fff", 0.1).drawGrid(p.scale / 5)
         form.strokeOnly("#fff", 1).drawAxis(space.center)
 
         const t = time / 1000
@@ -36,7 +36,7 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
 
         form.fill("#fff")
             .font(13)
-            .text([10, space.height - 10], (time / 1000).toFixed(1) + "s")
+            .text([10, space.height - 10], (time / p.timeScale).toFixed(2) + " fs")
     })
     return space
 }
