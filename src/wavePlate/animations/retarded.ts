@@ -3,18 +3,25 @@ import { CartesianSpace } from "../../ext"
 import { Mat, Pt, Vec } from "pts"
 
 type Options = {
-    type?: "in-transit";
-    elementId: string;
-    bgColor?: string;
+    type?: "in-transit"
+    elementId: string
+    bgColor?: string
 }
 
-export function setupRetardedField(p: Parameters, options: Options): CartesianSpace {
-    const { elementId, type, bgColor } = options;
+export function setupRetardedField(
+    p: Parameters,
+    options: Options,
+): CartesianSpace {
+    const { elementId, type, bgColor } = options
     const space = new CartesianSpace(elementId).setup({
         pixelDensity: 2,
         bgcolor: bgColor || "#04121f",
     })
     const form = space.getForm()
+    const trace: Pt[] = []
+    p.addTraceListener(() => {
+        trace.length = 0
+    })
 
     space.add((time) => {
         if (!time) return
@@ -28,13 +35,14 @@ export function setupRetardedField(p: Parameters, options: Options): CartesianSp
             p.E_0x * Math.cos(p.w * t),
             p.E_0y * Math.cos(p.w * t + p.phi),
         ).$multiply(p.scale)
-        // Create a retarded field
-        let retZ = type === "in-transit" ? p.zPos : 1;
+
+        let retZ = type === "in-transit" ? p.zPos : 1
         if (retZ < 0) {
             retZ = 0
         } else if (retZ > 1) {
             retZ = 1
         }
+        // Create a retarded field
         const E_r = new Pt(
             p.E_0x * Math.cos(p.w * t - p.gamma * retZ),
             p.E_0y * Math.cos(p.w * t + p.phi - p.gamma * retZ),
@@ -64,11 +72,20 @@ export function setupRetardedField(p: Parameters, options: Options): CartesianSp
                 ],
                 3,
             )
-        
+
         // Draw the electric field vector.
         form.stroke("#fff", 3)
             .fill("#fff")
             .drawArrowLine([space.center, space.center.$add(x_r).$add(y_r)], 4)
+
+        // Add current point to the trace and draw it
+        if (p.showTrace) {
+            trace.push(space.center.$add(x_r).$add(y_r))
+            if (trace.length >= 1000) {
+                trace.shift()
+            }
+            form.strokeOnly("#c4c3c3", 1).line(trace)
+        }
 
         // Label
         const d = 0.32 * space.width
@@ -81,7 +98,10 @@ export function setupRetardedField(p: Parameters, options: Options): CartesianSp
         // Time
         form.fill("#fff")
             .font(13)
-            .text([10, space.height - 10], (time / p.timeScale).toFixed(2) + " fs")
+            .text(
+                [10, space.height - 10],
+                (time / p.timeScale).toFixed(2) + " fs",
+            )
     })
     return space
 }

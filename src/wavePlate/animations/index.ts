@@ -9,9 +9,12 @@ export type Evaluations = {
     timeScale: number
 }
 
-export type Inputs = Omit<Record<keyof Evaluations, string>, "w" | "timeScale"> & {
-    frequency: string;
-    wavelength: string;
+export type Inputs = Omit<
+    Record<keyof Evaluations, string>,
+    "w" | "timeScale"
+> & {
+    frequency: string
+    wavelength: string
 }
 
 export class Parameters {
@@ -24,6 +27,8 @@ export class Parameters {
     timeScale: number
     private _theta: number
     private _zPos: number
+    private _showTrace: boolean
+    private _traceChangeListeners: ((v: boolean) => void)[]
 
     constructor(inputs: Evaluations) {
         this.w = inputs.w
@@ -32,9 +37,11 @@ export class Parameters {
         this.phi = inputs.phi
         this.scale = inputs.scale
         this.gamma = inputs.gamma
-        this.timeScale = inputs.timeScale;
+        this.timeScale = inputs.timeScale
         this._theta = inputs.theta
         this._zPos = -500
+        this._showTrace = false
+        this._traceChangeListeners = []
     }
     set theta(t: number) {
         this._theta = (t * Math.PI) / 180
@@ -44,6 +51,18 @@ export class Parameters {
     }
     get zPos(): number {
         return this._zPos / 1000
+    }
+    get showTrace(): boolean {
+        return this._showTrace
+    }
+    set showTrace(v: boolean) {
+        this._showTrace = v
+        for (const l of this._traceChangeListeners) {
+            l(v)
+        }
+    }
+    addTraceListener(l: (v: boolean) => void): void {
+        this._traceChangeListeners.push(l)
     }
     tickZPos() {
         if (this._zPos === 1500) {

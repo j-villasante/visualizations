@@ -8,6 +8,10 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
         bgcolor: "#04121f",
     })
     const form = space.getForm()
+    const trace: Pt[] = []
+    p.addTraceListener(() => {
+        trace.length = 0
+    })
 
     space.add((time) => {
         if (!time) return
@@ -33,6 +37,15 @@ export function setupPolarizedField(p: Parameters): CartesianSpace {
         form.stroke("#fff", 3)
             .fill("#fff")
             .drawArrowLine([space.center, space.center.$add(E)], 4)
+        
+        // Add current point to the trace and draw it
+        if (p.showTrace) {
+            trace.push(space.center.$add(E))
+            if (trace.length >= 1000) {
+                trace.shift()
+            }
+            form.strokeOnly("#c4c3c3", 1).line(trace)
+        }
 
         form.fill("#fff")
             .font(13)

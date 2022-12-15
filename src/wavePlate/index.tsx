@@ -70,7 +70,7 @@ export const WavePlate = () => {
 
         setInterval(() => {
             params.tickZPos()
-        }, 20)
+        }, 10)
     }, [])
 
     React.useEffect(() => {
@@ -155,6 +155,10 @@ export const WavePlate = () => {
             : `${s < 0 ? "-" : "+"} ${
                   Math.abs(s) === 1 ? "" : Math.abs(s)
               } \\sigma_1`
+    }
+
+    function onTraceToggle(event: React.ChangeEvent<HTMLInputElement>) {
+        params.showTrace = event.target.checked
     }
 
     const theta = Math.atan2(e.E_0y, e.E_0x)
@@ -287,12 +291,10 @@ export const WavePlate = () => {
                     </div>
                 </div>
                 <div className="buttons">
-                    <button onClick={onApply}>
-                        Apply
-                    </button>
-                    <button onClick={onPlayPause}>
-                        Play/pause
-                    </button>
+                    <button onClick={onApply}>Apply</button>
+                    <button onClick={onPlayPause}>Play/pause</button>
+                    <label>Trace</label>
+                    <input type="checkbox" onChange={onTraceToggle} />
                 </div>
             </div>
             {/* <Explanation/> */}

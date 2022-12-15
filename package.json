@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "start": "node esbuild.config.js",
+    "serve": "http-server ./dist",
     "build": "node esbuild.config.js build",
     "lint": "eslint \"src/**/*.ts\"",
     "lintfix": "npm run lint -- --fix"
@@ -27,6 +28,7 @@
     "esbuild-sass-plugin": "^2.3.3",
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
+    "http-server": "^14.1.1",
     "live-server": "^1.2.2",
     "prettier": "2.7.1",
     "typescript": "^4.8.4"
