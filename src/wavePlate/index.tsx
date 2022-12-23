@@ -288,6 +288,10 @@ export const WavePlate = () => {
                     />
                 </div>
             </div>
+            <div id="scale">{`To be able to see the animation, 
+                \\(2\\pi600\\times 10^{12}\\mathrm{s}\\) has been scaled to 
+                \\(1\\mathrm{s}\\). So about \\(0.2653\\mathrm{fs}\\) in 
+                reality equal \\(1\\mathrm{s}\\) in the animation.`}</div>
             <div className="buttons">
                 <button onClick={onApply}>Apply</button>
                 <button onClick={onPlayPause}>Play/pause</button>
@@ -316,10 +320,12 @@ export const WavePlate = () => {
                 </div>
                 <div id="references">
                     The animation was done using{" "}
-                    <a href="https://ptsjs.org/">Pts.js</a>. The code can be found{" "}
+                    <a href="https://ptsjs.org/">Pts.js</a>. The code can be
+                    found{" "}
                     <a href="https://github.com/j-villasante/visualizations">
                         here
-                    </a>. The theory of electromagnetic polarization was based on 
+                    </a>
+                    . The theory of electromagnetic polarization was based on
                     Mark Beck's Quantum Mechanics chapter 2.
                 </div>
             </div>
