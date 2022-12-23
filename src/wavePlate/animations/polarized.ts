@@ -2,8 +2,12 @@ import type { Parameters } from "."
 import { CartesianSpace } from "../../ext"
 import { Pt } from "pts"
 
-export function setupPolarizedField(p: Parameters): CartesianSpace {
-    const space = new CartesianSpace("#regular").setup({
+type Options = {
+    elementId: string;
+}
+
+export function setupPolarizedField(p: Parameters, opts: Options): CartesianSpace {
+    const space = new CartesianSpace(opts.elementId).setup({
         pixelDensity: 2,
         bgcolor: "#04121f",
     })

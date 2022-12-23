@@ -21,7 +21,9 @@ require("esbuild")
         bundle: true,
         outdir: "./dist",
         watch: !build,
-        minify: build,
+        minifyWhitespace: build,
+        minifyIdentifiers: build,
+        minifySyntax: false,
         plugins: [sassPlugin.sassPlugin()],
     })
     .catch(() => process.exit(1))

@@ -10,6 +10,8 @@ import {
     setupPositionAnimation,
     setupRetardedField,
 } from "./animations"
+import { CommonVectors } from "./commonVectors"
+import { Summary } from "./summary"
 
 type Spaces = Record<
     "polarized" | "retarded" | "inTransit" | "wavePlate",
@@ -51,7 +53,7 @@ export const WavePlate = () => {
 
     React.useEffect(() => {
         spacesRef.current = {
-            polarized: setupPolarizedField(params),
+            polarized: setupPolarizedField(params, { elementId: "#regular" }),
             retarded: setupRetardedField(params, {
                 elementId: "#retarded",
             }),
@@ -62,6 +64,8 @@ export const WavePlate = () => {
             }),
             wavePlate: setupPositionAnimation(params),
         }
+
+        setupPolarizedField(params, { elementId: "#regular-text" }).play()
 
         spacesRef.current.polarized.play()
         spacesRef.current.retarded.play()
@@ -166,138 +170,159 @@ export const WavePlate = () => {
     const s2 = round(Math.sin(2 * theta) * Math.cos(e.phi), 2)
     const s3 = round(Math.sin(2 * theta) * Math.sin(e.phi), 2)
 
-    return (
-        <MathJax>
+    const coreContent = (
+        <div id="core-content">
             <h1>Wave plate</h1>
-            <div id="container">
-                <div id="animations">
-                    <div>
-                        <div className="animation-label">
-                            Input polarization
-                        </div>
-                        <canvas className="field" id="regular"></canvas>
-                        <div id="pol-eq">{`$$
-							\\vec{E} = e^{i${round(e.w * 1.2, 2)}\\times 10^{15} \\pi t}
-							\\begin{pmatrix} 
-							${e.E_0x} \\\\ 
-							${e.E_0y === 1 && e.phi !== 0 ? "" : e.E_0y}
-							${e.phi === 0 ? "" : `e^{${e.phi === 1 ? "" : round(e.phi, 2)}i}`} 
-							\\end{pmatrix}
-						$$`}</div>
-                        <div id="quantum-eq">{`
-							$$
-							\\rho=\\frac{1}{2}(1${sTerm(s1)}${sTerm(s2)}${sTerm(s3)})
-							$$
-						`}</div>
-                    </div>
-                    <div>
-                        <div className="animation-label">
-                            Polarization along wave-plate
-                        </div>
-                        <canvas className="field" id="in-transit"></canvas>
-                        <canvas id="wave-plate"></canvas>
-                    </div>
-                    <div>
-                        <div className="animation-label">
-                            Output polarization
-                        </div>
-                        <canvas className="field" id="retarded"></canvas>
-                    </div>
+            <div id="animations">
+                <div>
+                    <div className="animation-label">Input polarization</div>
+                    <canvas className="field" id="regular"></canvas>
+                    <div id="pol-eq">{`$$
+                        \\vec{E} = e^{i${round(
+                            e.w * 1.2,
+                            2,
+                        )}\\times 10^{15} \\pi t}
+                        \\begin{pmatrix} 
+                        ${round(e.E_0x, 4)} \\\\ 
+                        ${e.E_0y === 1 && e.phi !== 0 ? "" : round(e.E_0y, 4)}
+                        ${
+                            e.phi === 0
+                                ? ""
+                                : `e^{${e.phi === 1 ? "" : round(e.phi, 2)}i}`
+                        } 
+                        \\end{pmatrix}
+                    $$`}</div>
+                    <div id="quantum-eq">{`$$
+                    \\rho=\\frac{1}{2}(1${sTerm(s1)}${sTerm(s2)}${sTerm(s3)})
+                    $$`}</div>
                 </div>
-                <div className="form-title">Input light parameters</div>
-                <div className="form">
-                    <div className="form-group">
-                        <label htmlFor="e_0x">{"\\(E_{0x}\\)"}</label>
-                        <input
-                            type="text"
-                            id="e_0x"
-                            value={inputs.E_0x}
-                            onChange={(e) =>
-                                updateInputs({ E_0x: e.target.value })
-                            }
-                            onKeyDown={(e) => onInputEnter(e, "E_0x")}
-                        />
+                <div>
+                    <div className="animation-label">
+                        Polarization along wave-plate
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="e_0y">{"\\(E_{0y}\\)"}</label>
-                        <input
-                            type="text"
-                            id="e_0y"
-                            value={inputs.E_0y}
-                            onChange={(e) =>
-                                updateInputs({ E_0y: e.target.value })
-                            }
-                            onKeyDown={(e) => onInputEnter(e, "E_0y")}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="frequency">Frequency (THz)</label>
-                        <input
-                            type="text"
-                            id="frequency"
-                            value={inputs.frequency}
-                            onChange={onFrequencyChange}
-                            onKeyDown={(e) => onInputEnter(e, "frequency")}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="wavelength">Wavelength (nm)</label>
-                        <input
-                            type="text"
-                            id="wavelength"
-                            value={inputs.wavelength}
-                            onChange={onWavelengthChange}
-                            onKeyDown={(e) => onInputEnter(e, "wavelength")}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="phi">\(\phi\)</label>
-                        <input
-                            type="text"
-                            id="phi"
-                            value={inputs.phi}
-                            onChange={(e) =>
-                                updateInputs({ phi: e.target.value })
-                            }
-                            onKeyDown={(e) => onInputEnter(e, "phi")}
-                        />
-                    </div>
+                    <canvas className="field" id="in-transit"></canvas>
+                    <canvas id="wave-plate"></canvas>
                 </div>
-                <div className="form-title">Wave-plate parameters</div>
-                <div className="form">
-                    <div className="form-group">
-                        <label htmlFor="gamma">\(\Gamma\)</label>
-                        <input
-                            type="text"
-                            id="gamma"
-                            value={inputs.gamma}
-                            onChange={(e) =>
-                                updateInputs({ gamma: e.target.value })
-                            }
-                            onKeyDown={(e) => onInputEnter(e, "gamma")}
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="retAngle">\(\theta\)</label>
-                        <input
-                            type="text"
-                            id="retAngle"
-                            value={inputs.theta}
-                            onChange={(e) =>
-                                updateInputs({ theta: e.target.value })
-                            }
-                            onKeyDown={(e) => onInputEnter(e, "theta")}
-                        />
-                    </div>
+                <div>
+                    <div className="animation-label">Output polarization</div>
+                    <canvas className="field" id="retarded"></canvas>
                 </div>
-                <div className="buttons">
-                    <button onClick={onApply}>Apply</button>
-                    <button onClick={onPlayPause}>Play/pause</button>
+            </div>
+            <div className="form-title">Input light parameters</div>
+            <div className="form">
+                <div className="form-group">
+                    <label htmlFor="e_0x">{"\\(E_{0x}\\)"}</label>
+                    <input
+                        type="text"
+                        id="e_0x"
+                        value={inputs.E_0x}
+                        onChange={(e) => updateInputs({ E_0x: e.target.value })}
+                        onKeyDown={(e) => onInputEnter(e, "E_0x")}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="e_0y">{"\\(E_{0y}\\)"}</label>
+                    <input
+                        type="text"
+                        id="e_0y"
+                        value={inputs.E_0y}
+                        onChange={(e) => updateInputs({ E_0y: e.target.value })}
+                        onKeyDown={(e) => onInputEnter(e, "E_0y")}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="frequency">Frequency (THz)</label>
+                    <input
+                        type="text"
+                        id="frequency"
+                        value={inputs.frequency}
+                        onChange={onFrequencyChange}
+                        onKeyDown={(e) => onInputEnter(e, "frequency")}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="wavelength">Wavelength (nm)</label>
+                    <input
+                        type="text"
+                        id="wavelength"
+                        value={inputs.wavelength}
+                        onChange={onWavelengthChange}
+                        onKeyDown={(e) => onInputEnter(e, "wavelength")}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="phi">\(\phi\)</label>
+                    <input
+                        type="text"
+                        id="phi"
+                        value={inputs.phi}
+                        onChange={(e) => updateInputs({ phi: e.target.value })}
+                        onKeyDown={(e) => onInputEnter(e, "phi")}
+                    />
+                </div>
+            </div>
+            <div className="form-title">Wave-plate parameters</div>
+            <div className="form">
+                <div className="form-group">
+                    <label htmlFor="gamma">\(\Gamma\)</label>
+                    <input
+                        type="text"
+                        id="gamma"
+                        value={inputs.gamma}
+                        onChange={(e) =>
+                            updateInputs({ gamma: e.target.value })
+                        }
+                        onKeyDown={(e) => onInputEnter(e, "gamma")}
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="retAngle">\(\theta\)</label>
+                    <input
+                        type="text"
+                        id="retAngle"
+                        value={inputs.theta}
+                        onChange={(e) =>
+                            updateInputs({ theta: e.target.value })
+                        }
+                        onKeyDown={(e) => onInputEnter(e, "theta")}
+                    />
+                </div>
+            </div>
+            <div className="buttons">
+                <button onClick={onApply}>Apply</button>
+                <button onClick={onPlayPause}>Play/pause</button>
+                <div className="trace-group">
                     <label>Trace</label>
                     <input type="checkbox" onChange={onTraceToggle} />
                 </div>
             </div>
-            {/* <Explanation/> */}
-        </MathJax>
+        </div>
+    )
+
+    return (
+        <>
+            <MathJax>{coreContent}</MathJax>
+            <div id="text">
+                <MathJax dynamic={false}>
+                    <Summary />
+                    <CommonVectors
+                        setInputs={setInputs}
+                        setEvaluations={setEvaluations}
+                    />
+                </MathJax>
+                <div id="text-animation">
+                    <div className="animation-label">Input polarization</div>
+                    <canvas className="field" id="regular-text"></canvas>
+                </div>
+                <div id="references">
+                    The animation was done using{" "}
+                    <a href="https://ptsjs.org/">Pts.js</a>. The code can be found{" "}
+                    <a href="https://github.com/j-villasante/visualizations">
+                        here
+                    </a>. The theory of electromagnetic polarization was based on 
+                    Mark Beck's Quantum Mechanics chapter 2.
+                </div>
+            </div>
+        </>
     )
 }
