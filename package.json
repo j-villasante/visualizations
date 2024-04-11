@@ -4,9 +4,9 @@
   "description": "Series of physics visualizations",
   "main": "dist/app.js",
   "scripts": {
-    "start": "node esbuild.config.js",
-    "serve": "http-server ./dist",
-    "build": "node esbuild.config.js build",
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview",
     "lint": "eslint \"src/**/*.ts\"",
     "lintfix": "npm run lint -- --fix"
   },
@@ -22,22 +22,25 @@
   "homepage": "https://github.com/j-villasante/visualizations#readme",
   "devDependencies": {
     "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.2.24",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "esbuild": "^0.15.10",
     "esbuild-sass-plugin": "^2.3.3",
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
-    "http-server": "^14.1.1",
-    "live-server": "^1.2.2",
     "prettier": "2.7.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "vite": "^5.2.8",
+    "vite-plugin-wasm": "^3.3.0"
   },
   "dependencies": {
     "better-react-mathjax": "^2.0.2",
     "mathjs": "^11.3.3",
     "pts": "^0.11.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "visopti": "file:../visopti/pkg"
   }
 }
